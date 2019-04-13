@@ -21,7 +21,7 @@ def get_file():
 def get_lines(filename):
     """Return a content of given file.
 
-    >>> get_lines("./test/files/test1.txt")
+    >>> get_lines("./tests/files/test1.txt")
     ['https://abcd.com/asdasd', 'http://abce.com', 'http://www.abcd.com/dsdsd']
     """
     content = []
@@ -66,14 +66,16 @@ def get_domain_dict(domains):
 
 
 def get_sorted_domain_dict(domain_dict):
-    """Return a sorted list.
+    """Return a sorted list. ignoring case
 
     >>> get_sorted_domain_dict({'a': 3, 'b': 4, 'c': 3})
     {'b': 4, 'a': 3, 'c': 3}
 
+    >>> get_sorted_domain_dict({'a': 3, 'b': 4, 'C': 3})
+    {'b': 4, 'a': 3, 'C': 3}
     """
     sortedDomainDict = {}
-    for key, value in sorted(domain_dict.items(), key=lambda item: (-item[1], item[0])):
+    for key, value in sorted(domain_dict.items(), key=lambda item: (-item[1], item[0].lower())):
         sortedDomainDict[key] = value
 
     return sortedDomainDict
