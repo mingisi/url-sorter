@@ -8,6 +8,9 @@ will be displayed in the following format:
 
 from murl import Url
 import sys
+import sqlite3
+import db_utils
+
 
 def get_file():
     """Returns the absolute path to the file, first arg passed through the console"""
@@ -18,82 +21,66 @@ def get_file():
         raise ValueError('Please provide a input file.')
 
 
-def get_lines(filename):
-    """Return a content of given file.
-
-    >>> get_lines("./tests/files/test1.txt")
-    ['https://abcd.com/asdasd', 'http://abce.com', 'http://www.abcd.com/dsdsd']
+def store(conn, filename):
     """
-    content = []
+    Return a dictionary of domain and count.
+    :param conn: the Connection object
+    :param filename: file path to the list of url
+    :return:
+    """
     try:
-        with open(filename, "r") as f:
-            content = [line.rstrip('\n') for line in f]
-        return content
+        with open(filename, "r") as urlfile:
+            for line in urlfile:
+                pline = process_line(line)
+                if pline != '' and db_utils.db_exist(conn, (pline,)):
+                    db_utils.update_url(conn, (pline,))
+                else:
+                    db_utils.db_insert(conn, (pline, 1,))
     except IOError as error:
         raise IOError('File does not exist.') from error
 
 
-def get_full_domain(url_list):
-    """Return a list of domains.
+def process_line(line):
+    """Return a list of hostnames wi th www removed
 
-    >>> get_full_domain(['https://abcd.com/asdasd', 'http://abce.com', 'http://www.abcd.com/dsdsd'])
-    ['abcd.com', 'abce.com', 'abcd.com']
+    >>> process_line('https://abcd.com/asdasd')
+    'abcd.com'
+
+    >>> process_line('http://abce.com')
+    'abce.com'
+
+    >>> process_line('http://www.abcd.com/dsdsd')
+    'abcd.com'
+
+    >>> process_line('invalid_url')
+    ''
     """
-    domains = []
-    for url in url_list:
-        ext = Url(url)
-        domains.append(ext.host.replace("www.", ""))
-
-    return domains
-
-
-def get_domain_dict(domains):
-    """Return a dictionary of domain and count.
-
-    >>> get_domain_dict(["abcd.com", "abce.com", "abcd.com"])
-    {'abcd.com': 2, 'abce.com': 1}
-
-    """
-
-    domainWithCount = {}
-    for domain in domains:
-        if domain in domainWithCount:
-            domainWithCount[domain] += 1
-        else:
-            domainWithCount[domain] = 1
-
-    return domainWithCount
-
-
-def get_sorted_domain_dict(domain_dict):
-    """Return a sorted list. ignoring case
-
-    >>> get_sorted_domain_dict({'a': 3, 'b': 4, 'c': 3})
-    {'b': 4, 'a': 3, 'c': 3}
-
-    >>> get_sorted_domain_dict({'a': 3, 'b': 4, 'C': 3})
-    {'b': 4, 'a': 3, 'C': 3}
-    """
-    sortedDomainDict = {}
-    for key, value in sorted(domain_dict.items(), key=lambda item: (-item[1], item[0].lower())):
-        sortedDomainDict[key] = value
-
-    return sortedDomainDict
-
-
-def display(sorted_domain_dict):
-    """Prints a sorted list"""
-    for key, value in sorted_domain_dict.items():
-        print("%s  %s" % (value, key))
-
+    ext = Url(line.rstrip('\n').lower())
+    return ext.host.replace("www.", "")
 
 def main():
+    """Prints a sorted list"""
+
+    # get the file name from the console
     filename = get_file()
-    lines = get_lines(filename)
-    domains_list = get_full_domain(lines)
-    domain_dict = get_domain_dict(domains_list)
-    sorted_domain_dict = get_sorted_domain_dict(domain_dict)
-    display(sorted_domain_dict)
+
+    # create db connection
+    conn = db_utils.db_connection()
+    with conn:
+        # create a table
+        db_utils.db_create(conn)
+
+        # add the hostname and occurrence to the db
+        store(conn, filename)
+
+        # select all host name
+        db_utils.db_select_all(conn)   # create a table
+
+        # conn.commit()
+
+    conn.close()
+
+    db_utils.db_terminate()
 
 
 if __name__ == "__main__":

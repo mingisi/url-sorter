@@ -16,7 +16,7 @@ def test_get_file():
 
 
 def test_get_file_value_error():
-    """ Testing if we get list of domain names
+    """ checking if it throws an exception if the file name is not provided
     """
     with pytest.raises(ValueError, match=r"Please provide a input file."):
         sys.argv = ['programme_name']

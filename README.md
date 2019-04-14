@@ -51,8 +51,8 @@ the output is a sorted in a descending order based on number of occurrences, the
 
  `get_file` function is used get the file name from the console args
 
- `get_lines` function is used to read the file the file line by line and remove any new line character and produce list of urls
-
+ `get_lines` function is used to read the file line at a time and the previous will be garbage collected, so to this  enable reading a large files the line process/manipulated at the time of reading the line and then stored in the dictiontionary. the function removes any new line character and produce list of urls
+<scheme>://<netloc>/<path>;<params>?<query>#<fragment>
  `get_full_domain` function is used go through a list of valid url(Parts for RFC 3986 URI syntax) using `murl` module(`https://github.com/berkerpeksag/murl`). the function returns a list of hostname with the www. removed
 
  `get_domain_dict` takes a list of hostnames and put it into dictionery `key: hostname value: count/occrance` and returns a dictionary of hostname and occurrence  

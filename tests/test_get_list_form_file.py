@@ -7,13 +7,12 @@ def domain_list():
     return url_parser.get_lines("tests/files/test1.txt")
 
 
-def test_domain_list_form_file(domain_list):
+def test_domain_dict(domain_list):
     """ Testing if we get list of domain names
     """
-    assert domain_list == ['https://abcd.com/asdasd',
-                           'http://abce.com', 'http://www.abcd.com/dsdsd']
-
-
+    assert domain_list['abcd.com'] == 2
+    assert domain_list['abce.com'] == 1
+ 
 def test_io_error():
     """ Testing if we get list of domain names
     """
