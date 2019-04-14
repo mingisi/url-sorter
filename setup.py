@@ -30,10 +30,10 @@ class SetupDevelop(setuptools.command.develop.develop):
     def run(self):
         """
         Prepare environment for development.
-        - Ensures 'pytest' and 'coverage.py' are installed for testing.
+        - Ensures 'pytest' and 'pytest-cov' are installed for testing.
         - Call super()'s run method.
         """
-        subprocess.check_call(('pip', 'install', 'pytest', 'coverage'))
+        subprocess.check_call(('pip', 'install', 'pytest', 'pytest-cov', 'murl'))
 
         # Call super() (except develop is an old-style class, so we must call
         # directly). The effect is that the development egg-link is installed.
@@ -43,12 +43,13 @@ SetupDevelop.__doc__ = setuptools.command.develop.develop.__doc__
 
 
 setup(
+    tests_require=["pytest","coverage"],
     name='urlsorter',
     version='1.0.0',
     description='grouping sorting urls hostnames',
     long_description=read('README.md'),
 
-    py_modules=['sqlitedict'],
+    # py_modules=['url'],
 
     author='Salim Muthalib',
     author_email="salim.muthalib@outlook.com",

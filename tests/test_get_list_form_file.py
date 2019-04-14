@@ -1,7 +1,7 @@
 import pytest
 from .context import url_parser, db_utils
 
-DB_PATH = "./test_file.db"
+DB_PATH = "./tests/db/test_file.db"
 TABLE_NAME = "test_file"
 
 

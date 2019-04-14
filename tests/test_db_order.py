@@ -2,7 +2,7 @@ import pytest
 from .context import db_utils
 from sqlite3 import Error
 
-DB_PATH = "./test_exist.db"
+DB_PATH = "./tests/db/test_exist.db"
 TABLE_NAME = "test_exist"
 
 

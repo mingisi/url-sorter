@@ -11,7 +11,10 @@ the output is a sorted in a descending order based on number of occurrences, the
 
 ** please use python 3 **
 
+#### Create Virual environment 
 
+    virtualenv -p /usr/local/opt/python/bin/python3.7 .pevenv  
+    
 #### Activate virtual dev environment.
 
     source ./.pevenv/bin/activate
