@@ -58,6 +58,12 @@ def process_line(line):
     ext = Url(line.rstrip('\n').lower())
     return ext.host.replace("www.", "")
 
+
+def display(rows):
+    for row in rows:
+        print("%s  %s" % (row[1], row[0]))
+
+
 def main():
     """Prints a sorted list"""
 
@@ -73,13 +79,14 @@ def main():
         # add the hostname and occurrence to the db
         store(conn, filename)
 
-        # select all host name
-        db_utils.db_select_all(conn)   # create a table
+        # select all hostname in order
+        rows = db_utils.db_select_all_order(conn)
 
-        # conn.commit()
+        # display the rows on the screen
+        display(rows)
 
+    # close remove the db file
     conn.close()
-
     db_utils.db_terminate()
 
 
