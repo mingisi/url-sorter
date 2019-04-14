@@ -34,7 +34,8 @@ the output is a sorted in a descending order based on number of occurrences, the
     -  urls provided are always lowcase
     -  urls are in valid format 
     -  python 3 is can be used on the enviroment 
-    -  large file is 10000 urls line
+    -  sorting very large file in meomory isn't greate idea 
+    -  more than 140 terabyte will not be need
     -  their is know www in midle of the host name
     -   non english charaters iUTF-8
 
@@ -47,11 +48,10 @@ the output is a sorted in a descending order based on number of occurrences, the
 
 ### How it works
 
- the problem was broke down into 6  functions
 
  `get_file` function is used get the file name from the console args
 
- `get_lines` function is used to read the file line at a time and the previous will be garbage collected, so to this  enable reading a large files the line process/manipulated at the time of reading the line and then stored in the dictiontionary. the function removes any new line character and produce list of urls
+ `get_lines` function is used to read the file line at a time and the previous will be garbage collected, so to this  enable reading a large files the line processes/manipulated the string at the time of reading the line and then stored in the sqllite db on disk. SQLite database is limited in size to 140 terabyte guess
 <scheme>://<netloc>/<path>;<params>?<query>#<fragment>
  `get_full_domain` function is used go through a list of valid url(Parts for RFC 3986 URI syntax) using `murl` module(`https://github.com/berkerpeksag/murl`). the function returns a list of hostname with the www. removed
 
