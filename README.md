@@ -1,4 +1,5 @@
 |Travis|_
+
 .. |Travis| image:: https://travis-ci.org/mingisi/url-sorter.svg?branch=master
 .. _Travis: https://travis-ci.org/mingisi/url-sorter
 

@@ -30,7 +30,7 @@ class SetupDevelop(setuptools.command.develop.develop):
     def run(self):
         """
         Prepare environment for development.
-        - Ensures 'nose' and 'coverage.py' are installed for testing.
+        - Ensures 'pytest' and 'coverage.py' are installed for testing.
         - Call super()'s run method.
         """
         subprocess.check_call(('pip', 'install', 'pytest', 'coverage'))
